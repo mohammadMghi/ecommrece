@@ -33,15 +33,15 @@ class UserService implements IUserService
 
     }
 
-    public function login($username , $password)
+    public function login($email , $password)
     {
-        if(Auth::attempt(['username' => $username, 'password' => $password]))
+        if(Auth::attempt(['email' => $email, 'password' => $password]))
         {
             $user = Auth::user();
 
             $token = $user->createToken('Ecommerce')->plainTextToken;
 
-            return $token;
+            return new ResponseHandler($token , 200);
         }
 
         return new ResponseHandler('username or password was wrong !');
