@@ -10,5 +10,5 @@ interface IUserService
 
     public function logout();
 
-    public function register(User $user);
+    public function register($name , $email, $password);
 }

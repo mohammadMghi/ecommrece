@@ -1,8 +1,8 @@
 <?php
 
 namespace App\Http\Controllers\V1;
-
-use App\Error\ErrorHandler;
+ 
+use App\Response\ResponseHandler;
 use App\Http\Controllers\Controller;
 use App\Services\User\Contracts\IUserService;
 use Illuminate\Http\Request;
@@ -18,15 +18,46 @@ class UserController extends Controller
     {
         $request->validate(
             [
-                'username' => 'required|string',
+                'email' => 'required|string',
                 'password' => 'required|string'
             ]
         );
         try
         {
-            $result = $this->userService->login($request->username,$request->password);
+            $result = $this->userService->login($request->email,$request->password);
 
-            if($result instanceof ErrorHandler)
+            if($result instanceof ResponseHandler)
+            {
+                return response()->json(
+                    [
+                        'message' => $result->getMessage()
+                    ] , $result->getStatusCode()
+                );
+            } 
+
+        }catch(\Exception $e)
+        {
+            return response()->json(
+                [
+                    'message' => $e->getMessage()
+                ] , 500
+            );
+        }   
+    }
+
+    public function register(Request $request)
+    {
+        $request->validate(
+            rules: [
+                'email' => 'required|email',
+                'password' => 'required|string'
+            ]
+        );
+        try
+        {
+            $result = $this->userService->register($request->name,$request->email,$request->password);
+           
+            if($result instanceof ResponseHandler)
             {
                 return response()->json(
                     [
@@ -49,11 +80,6 @@ class UserController extends Controller
                 ] , 500
             );
         }   
-    }
-
-    public function register(Request $request)
-    {
-
     }
 
     public function logout(Request $request)

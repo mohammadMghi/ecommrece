@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Error;
+namespace App\Response;
 
-class ErrorHandler
+class ResponseHandler
 {
     private string $message;
     private int $status_code; 
