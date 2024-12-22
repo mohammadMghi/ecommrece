@@ -21,17 +21,19 @@ class ProductService implements IProductService
         return false;
     }
 
-    public function create($product , $image)
+    public function create($product_array , $image)
     {
         $product = new Product();
+ 
+        $product->title = $product_array['title'];
 
-        $product->title = $product['title'];
-
-        $product->content = $product['content'];
+        $product->content = $product_array['content'];
 
         $product->image = $image;
 
         $product->save();
+
+        return $product;
     }
 
     public function list($limit)
