@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\PostCollection;
 use App\Http\Resources\PostResource;
 use App\Response\ResponseHandler;
 use App\Services\Product\Contracts\IProductService;
@@ -67,10 +68,26 @@ class ProductController extends Controller
     {
         try
         {
+            $result = $this->productService->list($request->limit);
+            
+            if($result instanceof ResponseHandler)
+            {
+                return response()->json(
+                    [
+                        'message' => $result->getMessage()
+                    ], $result->getStatusCode()
+                );
+            }
 
-        }catch(Exception)
+            return new PostCollection($result);
+
+        }catch(Exception $e)
         {
-
+            return response()->json(
+                [
+                    'message' => $e->getMessage()
+                ] , 500
+            );
         }
     }
 

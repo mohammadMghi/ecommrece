@@ -38,7 +38,7 @@ class ProductService implements IProductService
 
     public function list($limit)
     {
-
+        return Product::paginate($limit);
     }
 
     public function update($id , $product)
