@@ -5,6 +5,8 @@ namespace App\Http\Controllers\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\PostCollection;
 use App\Http\Resources\PostResource;
+use App\Http\Resources\ProductCollection;
+use App\Http\Resources\ProductResource;
 use App\Response\ResponseHandler;
 use App\Services\Product\Contracts\IProductService;
 use Exception;
@@ -52,7 +54,7 @@ class ProductController extends Controller
                 );
             }
 
-            return new PostResource($result);
+            return new ProductResource($result);
 
         }catch(Exception $e)
         {
@@ -79,7 +81,7 @@ class ProductController extends Controller
                 );
             }
 
-            return new PostCollection($result);
+            return new ProductCollection($result);
 
         }catch(Exception $e)
         {
@@ -91,14 +93,29 @@ class ProductController extends Controller
         }
     }
 
-    public function find(Request $request)
+    public function find($id)
     {
         try
         {
+            $result = $this->productService->find($id);
+                        
+            if($result instanceof ResponseHandler)
+            {
+                return response()->json(
+                    [
+                        'message' => $result->getMessage()
+                    ], $result->getStatusCode()
+                );
+            }
 
-        }catch(Exception)
+            return new ProductResource($result);
+        }catch(Exception $e)
         {
-
+            return response()->json(
+                [
+                    'message' => $e->getMessage()
+                ] , 500
+            );
         }
     }
 
@@ -107,20 +124,28 @@ class ProductController extends Controller
         try
         {
 
-        }catch(Exception)
+        }catch(Exception $e)
         {
-
+            return response()->json(
+                [
+                    'message' => $e->getMessage()
+                ] , 500
+            );
         }
     }
 
-    public function delete(Request $request)
+    public function delete(int $id)
     {
         try
         {
 
-        }catch(Exception)
+        }catch(Exception $e)
         {
-
+            return response()->json(
+                [
+                    'message' => $e->getMessage()
+                ] , 500
+            );
         }
     }
 }

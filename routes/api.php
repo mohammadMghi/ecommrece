@@ -19,4 +19,5 @@ Route::group(['prefix' => 'v1'], function () {
     });
 
     Route::get('/products' , [ProductController::class , 'list']);
+    Route::get('/products/{id}' , [ProductController::class , 'list']);
 });
