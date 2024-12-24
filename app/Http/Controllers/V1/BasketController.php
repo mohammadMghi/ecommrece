@@ -5,6 +5,7 @@ namespace App\Http\Controllers\V1;
 use App\Http\Controllers\Controller;
 use App\Response\ResponseHandler;
 use App\Services\Basket\Contracts\IBasketService;
+use Exception;
 use Illuminate\Http\Request;
 
 class BasketController extends Controller
@@ -40,7 +41,33 @@ class BasketController extends Controller
 
             return response()->noContent(201);
 
-        }catch(\Exception $e)
+        }catch(Exception $e)
+        {
+            return response()->json(
+                [
+                    'message' => $e->getMessage()
+                ] , 500
+            );
+        }
+    }
+
+    public function delete($product_id)
+    {
+        try
+        {
+            $result = $this->basketService->delete(auth()->user()->id, $product_id);
+
+
+            if($result instanceof ResponseHandler)
+            {
+                return response()->json([
+                    'message' => $result->getMessage()
+                ], $result->getStatusCode()); 
+            }
+
+            return response()->noContent(200);
+
+        }catch(Exception $e)
         {
             return response()->json(
                 [
