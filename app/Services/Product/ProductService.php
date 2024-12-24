@@ -29,6 +29,8 @@ class ProductService implements IProductService
 
         $product->content = $product_array['content'];
 
+        $product->price = $product_array['price'];
+
         $product->image = $image;
 
         $product->save();
@@ -38,11 +40,21 @@ class ProductService implements IProductService
 
     public function list($limit)
     {
-
+        return Product::paginate($limit);
     }
 
-    public function update($id , $product)
+    public function update($id , $product_array)
     {
+        $product = Product::find($id);
+ 
+        $product->title = $product_array['title'];
 
+        $product->content = $product_array['content'];
+
+        $product->price = $product_array['price'];
+
+        $product->save();
+
+        return $product;
     }
 }
