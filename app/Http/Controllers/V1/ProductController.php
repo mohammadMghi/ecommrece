@@ -121,10 +121,32 @@ class ProductController extends Controller
         }
     }
 
-    public function update(Request $request)
+    public function update($id,Request $request)
     {
         try
         {
+            $request->validate([
+                'title' => 'string|required',
+                'content' => 'string|required',
+                'price' => 'string|required'
+            ]);
+
+            $result = $this->productService->update($id ,[
+                'title' => $request->title,
+                'content' => $request->content,
+                'price' => $request->price
+            ]);
+
+            if($result instanceof ResponseHandler)
+            {
+                return response()->json(
+                    [
+                        'message' => $result->getMessage()
+                    ], $result->getStatusCode()
+                );
+            }
+
+            return new ProductResource($result);
 
         }catch(Exception $e)
         {
