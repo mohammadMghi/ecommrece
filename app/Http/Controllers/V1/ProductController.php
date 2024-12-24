@@ -30,6 +30,7 @@ class ProductController extends Controller
                     'title' => 'required|string',
                     'content' => 'required|string',
                     'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+                    'price' => 'required|string'
                 ]
             );
 
@@ -41,6 +42,7 @@ class ProductController extends Controller
                 [
                     'title' => $request->title,
                     'content' => $request->content,
+                    'price' => $request->price
                 ],
                 $imageName
             );

@@ -29,6 +29,8 @@ class ProductService implements IProductService
 
         $product->content = $product_array['content'];
 
+        $product->price = $product_array['price'];
+
         $product->image = $image;
 
         $product->save();
