@@ -12,19 +12,25 @@ class BasketService implements IBasketService
     {
         //checks if user has not a basket we should create a new
         $basket = Basket::where('user_id' , $user_id)->where('is_paid' , false)->first();
-
+     
         if($basket)
-        {
+        {    
             if($product = $basket->items()->where('product_id' , $product_id)->first())
-            {
-                $product->increase('count' , 1);
-            }
+            {  
+                $product->count += $count;
 
+                $product->save();
+
+                return;
+            }
+       
             //user has a basket has not paid and we can add our product to the basket
             $basket->items()->create([
                 'product_id' => $product_id,
                 'count' => $count 
-            ]); 
+            ]);
+
+            return;
         }
 
         $basket = new Basket();
@@ -34,7 +40,7 @@ class BasketService implements IBasketService
         $basket->save();
 
         $basket->items()->create([
-            'product' => $product_id,
+            'product_id' => $product_id,
             'count' => $count
         ]);
 
