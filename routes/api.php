@@ -17,6 +17,7 @@ Route::group(['prefix' => 'v1'], function () {
     Route::group(['prefix' => 'admin'], function () {
         Route::post('/products' , [ProductController::class , 'create'])->middleware(['auth:sanctum','admin']);
         Route::put('/products/{id}' , [ProductController::class , 'update'])->middleware(['auth:sanctum','admin']);
+        Route::delete('/products/{id}' , [ProductController::class , 'delete'])->middleware(['auth:sanctum','admin']);
     });
 
     Route::get('/products' , [ProductController::class , 'list']);

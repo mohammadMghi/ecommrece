@@ -162,6 +162,18 @@ class ProductController extends Controller
     {
         try
         {
+            $result = $this->productService->delete($id);
+
+            if($result instanceof ResponseHandler)
+            {
+                return response()->json(
+                    [
+                        'message' => $result->getMessage()
+                    ], $result->getStatusCode()
+                );
+            }
+
+            return response()->noContent(201);
 
         }catch(Exception $e)
         {
