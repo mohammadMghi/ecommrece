@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Basket\BasketCollection;
 use App\Response\ResponseHandler;
 use App\Services\Basket\Contracts\IBasketService;
 use Exception;
@@ -66,6 +67,32 @@ class BasketController extends Controller
             }
 
             return response()->noContent(200);
+
+        }catch(Exception $e)
+        {
+            return response()->json(
+                [
+                    'message' => $e->getMessage()
+                ] , 500
+            );
+        }
+    }
+
+    public function list()
+    {
+        try
+        {
+            $result = $this->basketService->list(); 
+
+
+            if($result instanceof ResponseHandler)
+            {
+                return response()->json([
+                    'message' => $result->getMessage()
+                ], $result->getStatusCode()); 
+            }
+
+            return new BasketCollection($result);
 
         }catch(Exception $e)
         {

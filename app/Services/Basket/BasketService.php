@@ -57,4 +57,9 @@ class BasketService implements IBasketService
 
         return new ResponseHandler('not found', 404);
     }
+
+    public function list()
+    {
+        return Basket::with('items.product')->paginate();
+    }
 }

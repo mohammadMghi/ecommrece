@@ -10,4 +10,9 @@ class BasketItem extends Model
         'product_id',
         'count'
     ];
+
+    public function product()
+    {
+        return $this->hasOne(Product::class ,'id' ,'product_id');
+    }
 }
