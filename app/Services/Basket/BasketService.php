@@ -11,7 +11,8 @@ class BasketService implements IBasketService
     public function add($user_id , $product_id , $count)
     {
         //checks if user has not a basket we should create a new
-        $basket = Basket::where('user_id' , $user_id)->where('is_paid' , false)->first();
+        $basket = Basket::where('user_id' , $user_id)
+        ->where('is_paid' , false)->first();
      
         if($basket)
         {    
@@ -47,12 +48,16 @@ class BasketService implements IBasketService
     }
 
     public function delete($user_id ,$product_id)
-    {
-        $product = Basket::where('user_id' , $user_id)->where('product_id', $product_id)->first();
+    {    
+        $items = Basket::where('user_id' , $user_id)
+        ->where('is_paid' , false)->first()->items();
+
+        $product = $items->get()->where('product_id' , $product_id)->first();
+ 
 
         if($product)
         {
-            $product->delete();
+            return $product->delete();
         }
 
         return new ResponseHandler('not found', 404);

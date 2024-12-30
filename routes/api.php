@@ -24,6 +24,7 @@ Route::group(['prefix' => 'v1'], function () {
     Route::group(['prefix' => 'user'], function () {
         Route::post('/basket' , [BasketController::class , 'add'])->middleware(['auth:sanctum','admin']);
         Route::get('/basket' , [BasketController::class , 'list'])->middleware(['auth:sanctum','admin']);
+        Route::delete('/basket/{product_id}' , [BasketController::class , 'delete'])->middleware(['auth:sanctum','admin']);
     });
 
     Route::get('/products' , [ProductController::class , 'list']);
