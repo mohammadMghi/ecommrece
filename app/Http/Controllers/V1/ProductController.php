@@ -29,6 +29,7 @@ class ProductController extends Controller
                 [
                     'title' => 'required|string',
                     'content' => 'required|string',
+                    'category_id' => 'required|exists:categories,id',
                     'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
                     'price' => 'required|string'
                 ]
