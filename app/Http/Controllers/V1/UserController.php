@@ -5,6 +5,7 @@ namespace App\Http\Controllers\V1;
 use App\Response\ResponseHandler;
 use App\Http\Controllers\Controller;
 use App\Services\User\Contracts\IUserService;
+use Exception;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -85,5 +86,111 @@ class UserController extends Controller
     public function logout(Request $request)
     {
 
+    }
+
+    public function add(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string',
+            'password' => 'required|string|min:8',
+            'is_admin' => 'required|boolean',
+            'email' => 'required|email|unique:users,email',
+        ]);
+
+        try
+        {
+            $result = $this->userService->add(
+                $request->name,
+                $request->email,
+                $request->password,
+                $request->is_admin,
+            );
+
+            if($result instanceof ResponseHandler)
+            {
+                return response()->json(
+                    [
+                        'message' => $result->getMessage()
+                    ] , $result->getStatusCode()
+                );
+            }
+
+            return response()->noContent(201);
+
+        }catch(Exception $e)
+        {
+            return response()->json(
+                [
+                    'message' => $e->getMessage()
+                ] , 500
+            );
+        }
+    }
+
+    public function update(Request $request,int $id)
+    {
+        $request->validate([
+            'name' => 'required|string',
+            'password' => 'required|string|min:8',
+            'is_admin' => 'required|boolean',
+            'email' => 'required|email|unique:users,email',
+        ]);
+
+        try
+        {
+            $result = $this->userService->update(
+                $id,
+                $request->name,
+                $request->email,
+                $request->password,
+                $request->is_admin,
+            );
+
+            if($result instanceof ResponseHandler)
+            {
+                return response()->json(
+                    [
+                        'message' => $result->getMessage()
+                    ] , $result->getStatusCode()
+                );
+            }
+
+            return response()->noContent(201);
+
+        }catch(Exception $e)
+        {
+            return response()->json(
+                [
+                    'message' => $e->getMessage()
+                ] , 500
+            );
+        }
+    }
+
+    public function delete(int $id)
+    { 
+        try
+        {
+            $result = $this->userService->delete($id);
+
+            if($result instanceof ResponseHandler)
+            {
+                return response()->json(
+                    [
+                        'message' => $result->getMessage()
+                    ] , $result->getStatusCode()
+                );
+            }
+
+            return response()->noContent(200);
+
+        }catch(Exception $e)
+        {
+            return response()->json(
+                [
+                    'message' => $e->getMessage()
+                ] , 500
+            );
+        }
     }
 }

@@ -33,6 +33,8 @@ class ProductService implements IProductService
 
         $product->image = $image;
 
+        $product->category_id = $product_array['category_id'];
+
         $product->save();
 
         return $product;
@@ -52,6 +54,8 @@ class ProductService implements IProductService
         $product->content = $product_array['content'];
 
         $product->price = $product_array['price'];
+
+        $product->category_id = $product_array['category_id'];
 
         $product->save();
 

@@ -43,7 +43,8 @@ class ProductController extends Controller
                 [
                     'title' => $request->title,
                     'content' => $request->content,
-                    'price' => $request->price
+                    'price' => $request->price,
+                    'category_id' => $request->category_id
                 ],
                 $imageName
             );
@@ -129,13 +130,15 @@ class ProductController extends Controller
             $request->validate([
                 'title' => 'string|required',
                 'content' => 'string|required',
-                'price' => 'string|required'
+                'price' => 'string|required',
+                'category_id' => 'required|exists:categories,id',
             ]);
 
             $result = $this->productService->update($id ,[
                 'title' => $request->title,
                 'content' => $request->content,
-                'price' => $request->price
+                'price' => $request->price,
+                'category_id' => $request->category_id
             ]);
 
             if($result instanceof ResponseHandler)
