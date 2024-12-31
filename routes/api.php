@@ -31,8 +31,8 @@ Route::group(['prefix' => 'v1'], function () {
         //user managment
 
         Route::post('/users' , [UserController::class , 'add'])->middleware('auth:sanctum','admin');
-        Route::put('/users' , [UserController::class , 'update'])->middleware('auth:sanctum','admin');
-        Route::delete('/users' , [UserController::class , 'delete'])->middleware('auth:sanctum','admin');
+        Route::put('/users/{id}' , [UserController::class , 'update'])->middleware('auth:sanctum','admin');
+        Route::delete('/users/{id}' , [UserController::class , 'delete'])->middleware('auth:sanctum','admin');
         Route::get('/users' , [UserController::class , 'list'])->middleware('auth:sanctum','admin');
    
     });
