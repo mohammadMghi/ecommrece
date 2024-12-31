@@ -4,6 +4,8 @@ namespace App\Providers;
 
 use App\Services\Basket\BasketService;
 use App\Services\Basket\Contracts\IBasketService;
+use App\Services\Category\CategoryService;
+use App\Services\Category\Contracts\ICategoryService;
 use App\Services\Product\Contracts\IProductService;
 use App\Services\Product\ProductService;
 use App\Services\User\Contracts\IUserService;
@@ -27,6 +29,10 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->singleton(IBasketService::class , function(){
             return new BasketService();
+        });
+
+        $this->app->singleton(ICategoryService::class , function(){
+            return new CategoryService();
         });
     }
 
