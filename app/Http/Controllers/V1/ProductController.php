@@ -97,12 +97,18 @@ class ProductController extends Controller
         }
     }
 
-    public function find($id)
+    public function find(Request $request, $id)
     {
         try
         {
-            $result = $this->productService->find($id);
-                        
+            if($user = auth()->user())
+            {
+                $result = $this->productService->find($user->id,$request->ip(),$id);
+            }else
+            {
+                $result = $this->productService->find(null,$request->ip(),$id);
+            } 
+                         
             if($result instanceof ResponseHandler)
             {
                 return response()->json(
