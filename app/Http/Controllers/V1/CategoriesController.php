@@ -7,7 +7,7 @@ use App\Response\ResponseHandler;
 use App\Services\Category\Contracts\ICategoryService;
 use Exception;
 use Illuminate\Http\Request;
-
+use Phpml\Recommender\CollaborativeFiltering;
 class CategoriesController extends Controller
 {
     protected ICategoryService $categoryService;
@@ -23,7 +23,7 @@ class CategoriesController extends Controller
         ]);
 
         try
-        {
+        {    
             $result = $this->categoryService->add($request->title);
 
             if($result instanceof ResponseHandler)

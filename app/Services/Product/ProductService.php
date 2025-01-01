@@ -3,12 +3,31 @@
 namespace App\Services\Product;
 
 use App\Models\Product;
+use App\Models\View;
 use App\Services\Product\Contracts\IProductService;
+use Carbon\Carbon;
 
 class ProductService implements IProductService
 {  
-    public function find($id)
+    public function find($user_id = null ,$ip ,$id)
     {
+        $startOfDay = Carbon::now()->subDay();
+        $endOfDay = Carbon::now();  
+        
+        if(!View::where('ip' , $ip)->whereBetween('created_at' , [$startOfDay, $endOfDay]))
+        {
+            $view = new View();
+
+            if($user_id)
+            {
+                $view->user_id = $user_id;
+            }
+    
+            $view->ip = $ip;
+    
+            $view->save();
+        } 
+
         return Product::find($id);
     }
 
