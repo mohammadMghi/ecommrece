@@ -46,4 +46,27 @@ class CategoriesController extends Controller
             );
         }
     }
+
+    public function list(Request $request)
+    {
+        $result = $this->categoryService->list($request->per_page);
+
+        return response()->json([
+            'data' => $result
+        ]);
+    }
+
+    public function delete(int $id)
+    { 
+        $result = $this->categoryService->delete($id);
+
+        if($result instanceof ResponseHandler)
+        {   
+            return response()->json([
+                'message' => $result->getMessage()
+            ] , $result->getStatusCode());
+        }
+
+        return response()->noContent(200);
+    }
 }
