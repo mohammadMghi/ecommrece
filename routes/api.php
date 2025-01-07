@@ -47,6 +47,7 @@ Route::group(['prefix' => 'v1'], function () {
     Route::get('/products/{id}' , [ProductController::class , 'find']);
    
     Route::get('/categories' , [CategoriesController::class , 'list']);
+    Route::delete('/categories/{id}' , [CategoriesController::class , 'delete']);
 
     //product recommednations
     
